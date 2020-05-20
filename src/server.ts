@@ -51,6 +51,9 @@ import validator from 'validator';
       }
 
       const filteredpath = await filterImageFromURL(image_url)
+      if (filteredpath === "error") {
+        return res.status(400).send({ message: 'url must be image!' });
+      } else {
       return res.sendFile(filteredpath, function (err) {
         if (err) {
           next(err);
@@ -61,7 +64,7 @@ import validator from 'validator';
             console.log("error removing ", filteredpath);
           }
         }
-      });
+      });}
     });
 
 
