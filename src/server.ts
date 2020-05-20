@@ -47,12 +47,12 @@ import validator from 'validator';
 
       const image_url = req.query.image_url
       if (!validator.isURL(image_url)) {
-        return res.status(400).send({ message: 'proper url needed!' });
+        return res.status(422).send({ message: 'proper url needed!' });
       }
 
       const filteredpath = await filterImageFromURL(image_url)
       if (filteredpath === "error") {
-        return res.status(400).send({ message: 'url must be image!' });
+        return res.status(415).send({ message: 'url must be image!' });
       } else {
       return res.sendFile(filteredpath, function (err) {
         if (err) {
