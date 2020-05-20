@@ -2,6 +2,8 @@ import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import { filterImageFromURL, deleteLocalFiles } from './util/util';
 
+import validator from 'validator';
+
 (async () => {
 
   // Init the Express application
@@ -41,6 +43,11 @@ import { filterImageFromURL, deleteLocalFiles } from './util/util';
     async (req: Request, res: Response, next) => {
       if (!req.query || !req.query.image_url) {
         return res.status(400).send({ message: 'image_url query parameter neeeded!' });
+      }
+
+      const image_url = req.query.image_url
+      if (!validator.isURL(image_url)) {
+        return res.status(400).send({ message: 'proper url needed!' });
       }
 
       const filteredpath = await filterImageFromURL(image_url)
