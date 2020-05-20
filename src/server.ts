@@ -50,23 +50,23 @@ import validator from 'validator';
         return res.status(422).send({ message: 'proper url needed!' });
       }
 
-      const filteredpath = await filterImageFromURL(image_url)
+      const filteredpath = await filterImageFromURL(image_url);
       if (filteredpath === "error") {
         return res.status(415).send({ message: 'url must be image!' });
       } else {
-      return res.sendFile(filteredpath, function (err) {
-        if (err) {
-          next(err);
-        } else {
-          try {
-            deleteLocalFiles([filteredpath])
-          } catch (e) {
-            console.log("error removing ", filteredpath);
+        return res.sendFile(filteredpath, function (err) {
+          if (err) {
+            next(err);
+          } else {
+            try {
+              deleteLocalFiles([filteredpath]);
+            } catch (e) {
+              console.log("error removing ", filteredpath);
+            }
           }
-        }
-      });}
+        });
+      }
     });
-
 
   // Start the Server
   app.listen(port, () => {
